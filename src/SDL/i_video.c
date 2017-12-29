@@ -1182,8 +1182,7 @@ void I_UpdateVideoMode(void)
   {
 #ifdef GL_DOOM
 #ifdef __ANDROID__ //Tegra has only 16 bit depth buffer
-    gl_colorbuffer_bits = 32;
-    gl_depthbuffer_bits = 24;
+    gl_depthbuffer_bits = 16;
 #endif
 
     SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 0 );
@@ -1195,7 +1194,7 @@ void I_UpdateVideoMode(void)
     SDL_GL_SetAttribute( SDL_GL_ACCUM_GREEN_SIZE, 0 );
     SDL_GL_SetAttribute( SDL_GL_ACCUM_BLUE_SIZE, 0 );
     SDL_GL_SetAttribute( SDL_GL_ACCUM_ALPHA_SIZE, 0 );
-    //SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
     SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, gl_colorbuffer_bits );
     SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, gl_depthbuffer_bits );
     SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, 8 );
@@ -1208,7 +1207,19 @@ void I_UpdateVideoMode(void)
       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
       REAL_SCREENWIDTH, REAL_SCREENHEIGHT,
       init_flags);
+
+
+#ifdef __ANDROID__
+    if(!sdl_window)
+        I_Error("Could not create SDL window [%s]", REAL_SCREENWIDTH, REAL_SCREENHEIGHT, SDL_GetError());
+#endif
+
     sdl_glcontext = SDL_GL_CreateContext(sdl_window);
+
+#ifdef __ANDROID__
+    if(!sdl_glcontext)
+        I_Error("Could not create SDL context [%s]", REAL_SCREENWIDTH, REAL_SCREENHEIGHT, SDL_GetError());
+#endif
 
     gld_CheckHardwareGamma();
 #endif
