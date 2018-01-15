@@ -635,8 +635,13 @@ void M_DrawNewGame(void)
 /* cph - make `New Game' restart the level in a netgame */
 static void M_RestartLevelResponse(int ch)
 {
+#ifdef __ANDROID__
+  if ((ch != 'y') && ( ch != key_enter))
+    return;
+#else
   if (ch != 'y')
     return;
+#endif
 
   if (demorecording)
     exit(0);
@@ -673,8 +678,13 @@ void M_NewGame(int choice)
 // CPhipps - static
 static void M_VerifyNightmare(int ch)
 {
+#ifdef __ANDROID__
+  if ((ch != 'y') && ( ch != key_enter))
+    return;
+#else
   if (ch != 'y')
     return;
+#endif
 
   G_DeferedInitNew(nightmare,epi+1,1);
   M_ClearMenus ();
@@ -796,7 +806,11 @@ static char *forced_loadgame_message;
 
 static void M_VerifyForcedLoadGame(int ch)
 {
+#ifdef __ANDROID__
+  if ((ch=='y') || (ch==key_enter))
+#else
   if (ch=='y')
+#endif
     G_ForcedLoadGame();
   free(forced_loadgame_message);    // free the message strdup()'ed below
   M_ClearMenus();
@@ -1072,8 +1086,13 @@ int quitsounds2[8] =
 
 static void M_QuitResponse(int ch)
 {
+#ifdef __ANDROID__
+  if ((ch != 'y') && ( ch != key_enter))
+    return;
+#else
   if (ch != 'y')
     return;
+#endif
   
   //e6y: Optional removal of a quit sound
   if ((!netgame && showendoom) // killough 12/98
@@ -1416,8 +1435,13 @@ void M_QuickLoad(void)
 
 static void M_EndGameResponse(int ch)
 {
+#ifdef __ANDROID__
+  if ((ch != 'y') && ( ch != key_enter))
+    return;
+#else
   if (ch != 'y')
     return;
+#endif
 
   // killough 5/26/98: make endgame quit if recording or playing back demo
   if (demorecording || singledemo)
@@ -4543,7 +4567,11 @@ dboolean M_Responder (event_t* ev) {
 
   if (messageToPrint) {
     if (messageNeedsInput == true &&
+#ifdef __ANDROID__
+  !(ch == ' ' || ch == 'n' || ch == 'y' || ch == key_enter || ch == key_escape)) // phares
+#else
   !(ch == ' ' || ch == 'n' || ch == 'y' || ch == key_escape)) // phares
+#endif
       return false;
 
     menuactive = messageLastMenuActive;
@@ -4847,7 +4875,7 @@ dboolean M_Responder (event_t* ev) {
 
     if (default_verify)
       {
-  if (toupper(ch) == 'Y') {
+  if (toupper(ch) == 'Y' || ch == key_enter ) {
     M_ResetDefaults();
     default_verify = false;
     M_SelectDone(ptr1);
