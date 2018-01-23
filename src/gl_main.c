@@ -2051,8 +2051,10 @@ static void gld_DrawFlat(GLFlat *flat)
 #if defined(USE_VERTEX_ARRAYS) || defined(USE_VBO)
     if (gl_use_display_lists)
     {
+#ifndef __ANDROID__
       int display_list = (has_detail ? flats_detail_display_list : flats_display_list);
       glCallList(display_list + flat->sectornum);
+#endif
     }
     else
     {
@@ -2855,6 +2857,7 @@ void gld_DrawProjectedWalls(GLDrawItemType itemtype)
 
 void gld_InitDisplayLists(void)
 {
+#ifndef __ANDROID__
   int i;
   int loopnum; // current loop number
   GLLoopDef *currentloop;
@@ -2923,10 +2926,12 @@ void gld_InitDisplayLists(void)
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
   }
+#endif
 }
 
 void gld_CleanDisplayLists(void)
 {
+#ifndef __ANDROID__
   if (gl_use_display_lists)
   {
     if (flats_display_list_size > 0)
@@ -2943,6 +2948,7 @@ void gld_CleanDisplayLists(void)
       flats_detail_display_list_size = 0;
     }
   }
+#endif
 }
 
 void gld_DrawScene(player_t *player)

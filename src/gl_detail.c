@@ -427,7 +427,9 @@ void gld_DrawFlatDetail_NoARB(GLFlat *flat)
 #if defined(USE_VERTEX_ARRAYS) || defined(USE_VBO)
     if (gl_use_display_lists)
     {
+#ifndef __ANDROID__
       glCallList(flats_display_list + flat->sectornum);
+#endif
     }
     else
     {
