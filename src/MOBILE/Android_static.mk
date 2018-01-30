@@ -10,7 +10,7 @@ LOCAL_CFLAGS :=   -DGL_DOOM -DHAVE_LIBFLUIDSYNTH -fsigned-char  -DHAVE_CONFIG_H
 
 LOCAL_C_INCLUDES +=     $(LOCAL_PRBOOM_PATH)/MOBILE \
                         $(LOCAL_PRBOOM_PATH) \
-                        $(TOP_DIR)\fluidsynth\include\
+                        $(TOP_DIR)\AudioLibs_OpenTouch\fluidsynth\include\
                         $(SDL_INCLUDE_PATHS) \
 
 
