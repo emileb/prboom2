@@ -49,7 +49,7 @@ int gl_version;
 
 static dboolean gl_compatibility_mode;
 
-int GLEXT_CLAMP_TO_EDGE = GL_CLAMP;
+int GLEXT_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE;
 int gl_max_texture_size = 0;
 
 SDL_PixelFormat RGBAFormat;
@@ -443,7 +443,7 @@ void gld_InitOpenGL(dboolean compatibility_mode)
     gl_ext_arb_vertex_buffer_object = false;
     gl_arb_pixel_buffer_object = false;
     gl_arb_shader_objects = false;
-    GLEXT_CLAMP_TO_EDGE = GL_CLAMP;
+    GLEXT_CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE;
     gl_version = OPENGL_VERSION_1_1;
   }
 

@@ -386,7 +386,9 @@ void gld_Init(int width, int height)
   glClearDepth(1.0f);
 
   glEnable(GL_BLEND);
+#ifndef __ANDROID__
   glEnable(GL_DEPTH_CLAMP_NV);
+#endif
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // proff_dis

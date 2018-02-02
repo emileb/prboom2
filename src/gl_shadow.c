@@ -4,7 +4,7 @@
  *
  *  PrBoom: a Doom port merged with LxDoom and LSDLDoom
  *  based on BOOM, a modified and improved DOOM engine
- *  Copyright 2006 - 2008 G Jackson, Jaakko Kerônen
+ *  Copyright 2006 - 2008 G Jackson, Jaakko Kerï¿½nen
  *  Copyright 2009 - Andrey Budko
  *
  *  This program is free software; you can redistribute it and/or
@@ -90,13 +90,21 @@ void gld_InitShadows(void)
     {
       glGenTextures(1, &simple_shadows.tex_id);
       glBindTexture(GL_TEXTURE_2D, simple_shadows.tex_id);
-
+#ifdef __ANDROID__
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, surf->w, surf->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surf->pixels);
+#else
       glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, surf->w, surf->h, 0, GL_RGB, GL_UNSIGNED_BYTE, surf->pixels);
+#endif
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+#ifdef __ANDROID__
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+#else
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+#endif
       if (gl_ext_texture_filter_anisotropic)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, (GLfloat)(1<<gl_texture_filter_anisotropic));
 

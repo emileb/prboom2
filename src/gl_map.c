@@ -4,7 +4,7 @@
  *
  *  PrBoom: a Doom port merged with LxDoom and LSDLDoom
  *  based on BOOM, a modified and improved DOOM engine
- *  Copyright 2006 - 2008 G Jackson, Jaakko Kerônen
+ *  Copyright 2006 - 2008 G Jackson, Jaakko Kerï¿½nen
  *  Copyright 2009 - Andrey Budko
  *
  *  This program is free software; you can redistribute it and/or
@@ -114,9 +114,13 @@ void gld_InitMapPics(void)
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);//tex_filter[MIP_PATCH].min_filter);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);//tex_filter[MIP_PATCH].mag_filter);
+#ifdef __ANDROID__
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+#else
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
+#endif
         SDL_FreeSurface(surf);
       }
     }
@@ -180,7 +184,7 @@ void gld_DrawNiceThings(int fx, int fy, int fw, int fh)
 
     glBindTexture(GL_TEXTURE_2D, am_icons[i].tex_id);
 
-#if defined(USE_VERTEX_ARRAYS) || defined(USE_VBO)
+#if (defined(USE_VERTEX_ARRAYS) || defined(USE_VBO)) && !defined(__ANDROID__)
     {
       map_nice_thing_t *thing = &((map_nice_thing_t*)things->data)[0];
 
@@ -192,9 +196,10 @@ void gld_DrawNiceThings(int fx, int fy, int fw, int fh)
       glDrawArrays(GL_QUADS, 0, things->count * 4);
     }
 #else
-    for (i = 0; i < things->count; i++)
+    int t;
+    for (t = 0; t < things->count; t++)
     {
-      map_nice_thing_t *thing = &((map_nice_thing_t*)things->data)[i];
+      map_nice_thing_t *thing = &((map_nice_thing_t*)things->data)[t];
 
       glColor4ubv(&thing->v[0].r);
 
