@@ -2256,6 +2256,10 @@ static void AM_setFrameVariables(void)
   am_frame.precise = (V_GetMode() == VID_MODEGL);
 }
 
+#ifdef __ANDROID__
+void Mobile_AM_controls(double *zoom, fixed_t *pan_x, fixed_t *pan_y );
+#endif
+
 //
 // AM_Drawer()
 //
@@ -2273,6 +2277,32 @@ void AM_Drawer (void)
   if (automapmode & am_follow)
     AM_doFollowPlayer();
 
+#ifdef __ANDROID__
+    double zoom=0;
+    fixed_t touchX = 0;
+    fixed_t touchY = 0;
+ 	Mobile_AM_controls(&zoom,&touchX,&touchY);
+
+    m_paninc.x += touchX;
+    m_paninc.y += touchY;
+
+    if( zoom > 0 )
+    {
+        mtof_zoommul =  ((int) ((1. + zoom )*FRACUNIT));
+	    ftom_zoommul =  ((int) (FRACUNIT/(1. + zoom)));
+    }
+    else if ( zoom < 0 )
+    {
+        mtof_zoommul = ((int) (FRACUNIT/(1. - zoom)));
+        ftom_zoommul =  ((int) ((1. - zoom )*FRACUNIT));
+    }
+    else
+    {
+        ftom_zoommul = FRACUNIT;
+        mtof_zoommul = FRACUNIT;
+    }
+#endif
+
   // Change the zoom if necessary
   if (ftom_zoommul != FRACUNIT)
     AM_changeWindowScale();
@@ -2280,6 +2310,11 @@ void AM_Drawer (void)
   // Change x,y location
   if (m_paninc.x || m_paninc.y)
     AM_changeWindowLoc();
+
+#ifdef __ANDROID__
+    if( touchX || touchY )
+        m_paninc.x = m_paninc.y = 0;
+#endif
 
   AM_setFrameVariables();
 
