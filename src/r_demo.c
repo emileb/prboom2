@@ -957,6 +957,40 @@ void G_SetDemoFooter(const char *filename, wadtbl_t *wadtbl)
 
 int CheckWadBufIntegrity(const char *buffer, size_t size)
 {
+#ifdef __arm__ // alignment safe version
+  int i;
+  unsigned int length;
+  wadinfo_t header;
+  filelump_t fileinfo;
+  int result = false;
+
+  if (buffer && size > sizeof(header))
+  {
+    memcpy( &header, buffer, sizeof(header) );
+    if (strncmp(header.identification, "IWAD", 4) == 0 ||
+        strncmp(header.identification, "PWAD", 4) == 0)
+    {
+      header.numlumps = LittleLong(header.numlumps);
+      header.infotableofs = LittleLong(header.infotableofs);
+      length = header.numlumps * sizeof(filelump_t);
+
+      if (header.infotableofs + length <= size)
+      {
+        for (i = 0; i < header.numlumps; i++)
+        {
+          memcpy( &fileinfo, (buffer + header.infotableofs + i * sizeof(fileinfo)) , sizeof(fileinfo));
+          if (fileinfo.filepos < 0 ||
+              fileinfo.filepos > header.infotableofs ||
+              fileinfo.filepos + fileinfo.size > header.infotableofs)
+          {
+            break;
+          }
+        }
+        result = (i == header.numlumps);
+      }
+    }
+  }
+#else
   int i;
   unsigned int length;
   wadinfo_t *header;
@@ -989,7 +1023,7 @@ int CheckWadBufIntegrity(const char *buffer, size_t size)
       }
     }
   }
-
+#endif
   return result;
 }
 

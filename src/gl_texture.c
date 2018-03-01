@@ -874,6 +874,10 @@ int gld_BuildTexture(GLTexture *gltexture, void *data, dboolean readonly, int wi
   tex_height = gld_GetTexDimension(height);
   tex_buffer_size = tex_width * tex_height * 4;
 
+#ifdef __ANDROID__
+  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, (gltexture->flags & GLTEXTURE_MIPMAP) ? GL_TRUE : GL_FALSE);
+#endif
+
   //your video is modern
   if (gl_arb_texture_non_power_of_two)
   {
@@ -883,9 +887,9 @@ int gld_BuildTexture(GLTexture *gltexture, void *data, dboolean readonly, int wi
     glTexImage2D( GL_TEXTURE_2D, 0, gl_tex_format,
       tex_width, tex_height,
       0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
+#ifndef __ANDROID__
     gld_RecolorMipLevels(data);
-
+#endif
     gld_SetTexFilters(gltexture);
 
     result = true;
@@ -908,6 +912,7 @@ int gld_BuildTexture(GLTexture *gltexture, void *data, dboolean readonly, int wi
   else
 #endif // USE_GLU_MIPMAP
   {
+
 #ifdef USE_GLU_IMAGESCALE
     if ((width != tex_width) || (height != tex_height))
     {
@@ -965,8 +970,9 @@ int gld_BuildTexture(GLTexture *gltexture, void *data, dboolean readonly, int wi
           0, GL_RGBA, GL_UNSIGNED_BYTE, tex_buffer);
       }
     }
-
+#ifndef __ANDROID__ //Dont turn this off
     gltexture->flags &= ~GLTEXTURE_MIPMAP;
+#endif
     gld_SetTexFilters(gltexture);
     result = true;
   }

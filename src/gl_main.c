@@ -217,7 +217,7 @@ void gld_InitTextureParams(void)
 
   for (i = 0; i < MIP_COUNT; i++)
   {
-#ifdef USE_GLU_MIPMAP
+#if defined(USE_GLU_MIPMAP) || defined (__ANDROID__)
     tex_filter[i].mipmap     = params[*var[i]].mipmap;
 #else
     tex_filter[i].mipmap     = false;
