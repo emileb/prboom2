@@ -103,6 +103,19 @@ extern int     key_map_zoomout;
 extern int  key_quicksave;
 extern int  key_quickload;
 
+
+extern int key_speed_up;
+extern int key_speed_down;
+extern int key_speed_default;
+extern int speed_step;
+extern int key_level_restart;
+extern int key_nextlevel;
+extern int key_demo_jointogame;
+extern int key_demo_endlevel;
+extern int key_demo_skip;
+extern int key_walkcamera;
+extern int key_showalive;
+
 int newweapon = wp_nochange;
 
 void PortableAction(int state, int action)
@@ -206,6 +219,21 @@ void PortableAction(int state, int action)
             break;
         case PORT_ACT_QUICKLOAD:
             PortableKeyEvent(state,key_quickload,0);
+            break;
+        case PORT_ACT_DEMO_SPD_UP:
+            PortableKeyEvent(state,key_speed_up,0);
+            break;
+        case PORT_ACT_DEMO_SPD_DWN:
+            PortableKeyEvent(state,key_speed_down,0);
+            break;
+        case PORT_ACT_DEMO_SPD_DEF:
+            PortableKeyEvent(state,key_speed_default,0);
+            break;
+        case PORT_ACT_DEMO_JOIN:
+            PortableKeyEvent(state,key_demo_jointogame,0);
+            break;
+         case PORT_ACT_DEMO_CAMERA:
+            PortableKeyEvent(state,key_walkcamera,0);
             break;
 		}
 	}
@@ -313,6 +341,8 @@ touchscreemode_t PortableGetScreenMode()
             //return TS_GAME;
         else if( usergame )
             return TS_GAME;
+        else if(demoplayback)
+            return TS_DEMO;
         else
             return TS_BLANK;
     }
