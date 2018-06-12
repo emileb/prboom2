@@ -100,6 +100,7 @@ extern int     key_map_down;
 extern int     key_map_zoomin;
 extern int     key_map_zoomout;
 
+extern int  key_gamma;
 extern int  key_quicksave;
 extern int  key_quickload;
 
@@ -232,8 +233,11 @@ void PortableAction(int state, int action)
         case PORT_ACT_DEMO_JOIN:
             PortableKeyEvent(state,key_demo_jointogame,0);
             break;
-         case PORT_ACT_DEMO_CAMERA:
+        case PORT_ACT_DEMO_CAMERA:
             PortableKeyEvent(state,key_walkcamera,0);
+            break;
+        case PORT_ACT_GAMMA:
+            PortableKeyEvent(state,key_gamma,0);
             break;
 		}
 	}
