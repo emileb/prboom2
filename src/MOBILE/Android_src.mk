@@ -13,7 +13,7 @@ LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
                         $(TOP_DIR) \
                         $(TOP_DIR)/MobileTouchControls \
                         $(TOP_DIR)/Clibs_OpenTouch \
-                        $(TOP_DIR)/Doom/common_interface \
+                        $(TOP_DIR)/Clibs_OpenTouch/idtech1 \
                         $(LOCAL_PATH)/MOBILE  \
 
 
@@ -69,8 +69,8 @@ NET_CLIENT_SRC = d_client.c
 WAD_SRC = w_mmap.c
 MUS2MID_SRC = memio.c memio.h mus2mid.c mus2mid.h
 
-LOCAL_SRC_FILES =   ../../common_interface/android_jni.cpp \
-                    ../../common_interface/touch_interface.cpp \
+LOCAL_SRC_FILES =   ../../../Clibs_OpenTouch/idtech1/android_jni.cpp \
+                    ../../../Clibs_OpenTouch/idtech1/touch_interface.cpp \
                     ./MOBILE/game_interface.c \
                     $(COMMON_SRC) $(USE_GL_SRC) $(NET_CLIENT_SRC) $(WAD_SRC) $(MUS2MID_SRC)
 
