@@ -276,11 +276,9 @@ void PortableMove(float fwd, float strafe)
 //======================================================================
 
 //Look up and down
-static int look_pitch_mode;
 static float look_pitch_mouse,look_pitch_abs,look_pitch_joy;
 void PortableLookPitch(int mode, float pitch)
 {
-	look_pitch_mode = mode;
 	switch(mode)
 	{
 	case LOOK_MODE_MOUSE:
@@ -293,11 +291,9 @@ void PortableLookPitch(int mode, float pitch)
 }
 
 //left right
-static int look_yaw_mode;
 static float look_yaw_mouse,look_yaw_joy;
 void PortableLookYaw(int mode, float yaw)
 {
-	look_yaw_mode = mode;
 	switch(mode)
 	{
 	case LOOK_MODE_MOUSE:
@@ -377,29 +373,15 @@ void Mobile_IN_Move(ticcmd_t* cmd )
 	cmd->forwardmove  += forwardmove * forwardmove_normal[1];
 	cmd->sidemove  += sidemove   * sidemove_normal[1];
 
-
-	switch(look_pitch_mode)
-	{
-	case LOOK_MODE_MOUSE:
-		mlooky += look_pitch_mouse * 30000;
-		look_pitch_mouse = 0;
-		break;
-	case LOOK_MODE_JOYSTICK:
-		mlooky += look_pitch_joy * 1000;
-		break;
-	}
+    mlooky += look_pitch_mouse * 30000;
+    look_pitch_mouse = 0;
+    mlooky += look_pitch_joy * 1000;
 
 
-	switch(look_yaw_mode)
-	{
-	case LOOK_MODE_MOUSE:
-		cmd->angleturn += look_yaw_mouse * 80000;
-		look_yaw_mouse = 0;
-		break;
-	case LOOK_MODE_JOYSTICK:
-		cmd->angleturn += look_yaw_joy * 1000;
-		break;
-	}
+    cmd->angleturn += look_yaw_mouse * 80000;
+    look_yaw_mouse = 0;
+    cmd->angleturn += look_yaw_joy * 1000;
+
 
 	if (newweapon != wp_nochange)
 	{
