@@ -591,6 +591,10 @@ void I_FinishUpdate (void)
 
   // Draw!
   SDL_RenderPresent(sdl_renderer);
+
+#ifdef __ANDROID__ // The touch controls change the viewport, call this to fix. This function does not exist in SDL2
+      SDL_ForceupdateViewport(sdl_renderer);
+#endif
 }
 
 //
@@ -1244,9 +1248,10 @@ void I_UpdateVideoMode(void)
       init_flags);
     sdl_renderer = SDL_CreateRenderer(sdl_window, -1, flags);
 
-#ifndef __ANDROID__ //Fill screen
-    SDL_RenderSetLogicalSize(sdl_renderer, REAL_SCREENWIDTH , REAL_SCREENHEIGHT);
+#ifdef __ANDROID__ //Fill screen
+    if( M_CheckParm("-android_aspect") )
 #endif
+    SDL_RenderSetLogicalSize(sdl_renderer, REAL_SCREENWIDTH , REAL_SCREENHEIGHT);
 
     screen = SDL_CreateRGBSurface(0, SCREENWIDTH, SCREENHEIGHT, V_GetNumPixelBits(), 0, 0, 0, 0);
 
@@ -1526,9 +1531,11 @@ void UpdateGrab(void)
 
 static void ApplyWindowResize(SDL_Event *resize_event)
 {
-#ifndef __ANDROID__
+#ifdef __ANDROID__ //Fill screen
+    if( !M_CheckParm("-android_aspect") )
+        return;
+#endif
   int w = resize_event->window.data1;
   int h = resize_event->window.data2;
   SDL_RenderSetLogicalSize(sdl_renderer, w, w * REAL_SCREENHEIGHT / REAL_SCREENWIDTH);
-#endif
 }
