@@ -76,9 +76,9 @@ LOCAL_SRC_FILES =   ../../../Clibs_OpenTouch/idtech1/android_jni.cpp \
 
 LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
 
-LOCAL_STATIC_LIBRARIES += jwzgles prstatic-sdldoom  prstatic-pcsound prstatic-textscreen  prstatic-doommusic fluidsynth-static SDL2_net license_static logwritter
+LOCAL_STATIC_LIBRARIES += jwzgles prstatic-sdldoom  prstatic-pcsound prstatic-textscreen  prstatic-doommusic fluidsynth-static SDL2_net  logwritter
 
-LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer SDL2_image
+LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer SDL2_image core_shared
 
 include $(BUILD_SHARED_LIBRARY)
 
