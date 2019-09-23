@@ -370,18 +370,27 @@ extern int mlooky;
 //Called by doom on each tick
 void Mobile_IN_Move(ticcmd_t* cmd )
 {
-	cmd->forwardmove  += forwardmove * forwardmove_normal[1];
-	cmd->sidemove  += sidemove   * sidemove_normal[1];
-
-    mlooky += look_pitch_mouse * 30000;
-    look_pitch_mouse = 0;
-    mlooky += look_pitch_joy * 1000;
+    int blockGamepad( void );
+    int blockMove = blockGamepad() & ANALOGUE_AXIS_FWD;
+    int blockLook = blockGamepad() & ANALOGUE_AXIS_PITCH;
 
 
-    cmd->angleturn += look_yaw_mouse * 80000;
-    look_yaw_mouse = 0;
-    cmd->angleturn += look_yaw_joy * 1000;
+    if( !blockMove )
+    {
+	    cmd->forwardmove  += forwardmove * forwardmove_normal[1];
+	    cmd->sidemove  += sidemove   * sidemove_normal[1];
+    }
 
+    if( !blockLook )
+    {
+        mlooky += look_pitch_mouse * 30000;
+        look_pitch_mouse = 0;
+        mlooky += look_pitch_joy * 1000;
+
+        cmd->angleturn += look_yaw_mouse * 80000;
+        look_yaw_mouse = 0;
+        cmd->angleturn += look_yaw_joy * 1000;
+    }
 
 	if (newweapon != wp_nochange)
 	{
