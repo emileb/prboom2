@@ -78,7 +78,7 @@ LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
 
 LOCAL_STATIC_LIBRARIES += jwzgles prstatic-sdldoom  prstatic-pcsound prstatic-textscreen  prstatic-doommusic fluidsynth-static SDL2_net  logwritter
 
-LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer SDL2_image core_shared
+LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer SDL2_image core_shared saffal
 
 include $(BUILD_SHARED_LIBRARY)
 
