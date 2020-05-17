@@ -123,7 +123,12 @@ void PortableAction(int state, int action)
 {
 	LOGI("PortableAction %d %d",state, action);
 
-	if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
+	if ((action >= PORT_ACT_CUSTOM_0) && (action <= PORT_ACT_CUSTOM_17))
+    {
+        if( action <= PORT_ACT_CUSTOM_9 )
+            PortableKeyEvent(state, KEYD_KEYPAD0 + action - PORT_ACT_CUSTOM_0, 0);
+    }
+	else if (( PortableGetScreenMode() == TS_MENU ) || ( PortableGetScreenMode() == TS_BLANK )  || ( PortableGetScreenMode() == TS_Y_N ))
 	{
 		if (action >= PORT_ACT_MENU_UP && action <= PORT_ACT_MENU_ABORT)
 		{
