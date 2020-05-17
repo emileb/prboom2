@@ -393,7 +393,7 @@ const char* I_GetTempDir(void)
 //  if non-existant
 // cph 2006/07/23 - give prboom+ its own dir
 #ifdef __ANDROID__
-static const char prboom_dir[] = {"/prboom-plus"}; // Not hidden so not to confuse mobile users
+static const char prboom_dir[] = {"/user_files/prboom-plus"}; // Not hidden so not to confuse mobile users
 #else
 static const char prboom_dir[] = {"/.prboom-plus"}; // Mead rem extra slash 8/21/03
 #endif
