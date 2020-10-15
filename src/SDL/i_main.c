@@ -351,12 +351,17 @@ static int has_exited;
  * during the exit process (i.e. after exit() has already been called)
  * Prevent infinitely recursive exits -- killough
  */
-
+static void I_Quit (void);
 void I_SafeExit(int rc)
 {
   if (!has_exited)    /* If it hasn't exited yet, exit now -- killough */
     {
       has_exited=rc ? 2 : 1;
+#ifdef __ANDROID__
+
+	Z_Close();
+	I_Quit();
+#endif
       exit(rc);
     }
 }
