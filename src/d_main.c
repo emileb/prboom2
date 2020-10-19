@@ -1975,8 +1975,9 @@ static void D_DoomMainSetup(void)
 void D_DoomMain(void)
 {
 #ifdef __ANDROID__
-  void jwzgles_reset (void);
-  jwzgles_reset ();
+  //void jwzgles_reset (void);
+  //jwzgles_reset ();
+
 #endif
   D_DoomMainSetup(); // CPhipps - setup out of main execution stack
 

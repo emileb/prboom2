@@ -342,6 +342,8 @@ int gld_LoadGLDefs(const char * defsLump)
 
 void gld_Init(int width, int height)
 {
+  initialize_gl4es();
+
   GLfloat params[4]={0.0f,0.0f,1.0f,0.0f};
 
   lprintf(LO_INFO,"GL_VENDOR: %s\n",glGetString(GL_VENDOR));

@@ -52,8 +52,9 @@
 #include <gl.h>		/* Header File For The OpenGL Library */
 #include <glu.h>	/* Header File For The GLU Library */
 #elif defined(__ANDROID__)
-# include <GLES/gl.h>
-#include "jwzgles/jwzgles.h"
+//# include <GLES/gl.h>
+#include <GL/gl.h>
+//#include "jwzgles/jwzgles.h"
 #else
 #include <GL/gl.h>	/* Header File For The OpenGL Library */
 #include <GL/glu.h>	/* Header File For The GLU Library */

@@ -6,11 +6,12 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := prboom
 
-LOCAL_CFLAGS :=  -DHAVE_JWZGLES -DGL_DOOM -DENGINE_NAME=\"prboom\" -fsigned-char  -DHAVE_CONFIG_H -Dstricmp=strcasecmp -DPRBOOM_DOOM
+LOCAL_CFLAGS :=  -DHAVE_JWZGLES -DHAVE_SHADERS -DGL_DOOM -DENGINE_NAME=\"prboom\" -fsigned-char  -DHAVE_CONFIG_H -Dstricmp=strcasecmp -DPRBOOM_DOOM
 
 
 LOCAL_C_INCLUDES :=     $(SDL_INCLUDE_PATHS)  \
                         $(TOP_DIR) \
+                        $(TOP_DIR)/gl4es/include \
                         $(TOP_DIR)/MobileTouchControls \
                         $(TOP_DIR)/Clibs_OpenTouch \
                         $(TOP_DIR)/Clibs_OpenTouch/idtech1 \
@@ -74,11 +75,11 @@ LOCAL_SRC_FILES =   ../../../Clibs_OpenTouch/idtech1/android_jni.cpp \
                     ./MOBILE/game_interface.c \
                     $(COMMON_SRC) $(USE_GL_SRC) $(NET_CLIENT_SRC) $(WAD_SRC) $(MUS2MID_SRC)
 
-LOCAL_LDLIBS += -llog -lz -lGLESv1_CM
+LOCAL_LDLIBS += -llog -lz
 
-LOCAL_STATIC_LIBRARIES += jwzgles prstatic-sdldoom  prstatic-pcsound prstatic-textscreen  prstatic-doommusic fluidsynth-static SDL2_net  logwritter
+LOCAL_STATIC_LIBRARIES += prstatic-sdldoom  prstatic-pcsound prstatic-textscreen  prstatic-doommusic fluidsynth-static SDL2_net  logwritter
 
-LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer SDL2_image core_shared saffal
+LOCAL_SHARED_LIBRARIES := touchcontrols SDL2 SDL2_mixer SDL2_image core_shared saffal GL4ES
 
 include $(BUILD_SHARED_LIBRARY)
 

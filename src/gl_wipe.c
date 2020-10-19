@@ -54,7 +54,7 @@ GLuint CaptureScreenAsTexID(void)
  
   glGenTextures(1, &id);
   glBindTexture(GL_TEXTURE_2D, id);
-#ifdef __ANDROID__
+#ifdef __ANDROID__11
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 #else
@@ -64,13 +64,14 @@ GLuint CaptureScreenAsTexID(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+ //glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
 #ifdef __ANDROID__
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
 #else
   glTexImage2D(GL_TEXTURE_2D, 0, 3,
 #endif
     gld_GetTexDimension(SCREENWIDTH), gld_GetTexDimension(SCREENHEIGHT), 
-    0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
   glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, SCREENWIDTH, SCREENHEIGHT);
 
@@ -107,7 +108,7 @@ int gld_wipe_doMelt(int ticks, int *y_lookup)
   
   glBindTexture(GL_TEXTURE_2D, wipe_scr_start_tex);
   glColor3f(1.0f, 1.0f, 1.0f);
-#ifdef __ANDROID__
+#ifdef __ANDROID__11
   glBegin(GL_TRIANGLE_STRIP); //same thing
 #else
   glBegin(GL_QUAD_STRIP);

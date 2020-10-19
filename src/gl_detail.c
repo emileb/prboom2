@@ -695,6 +695,97 @@ void gld_SetTexDetail(GLTexture *gltexture)
   }
 }
 
+static int
+to_pow2 (int value)
+{
+  int i = 1;
+  while (i < value) i <<= 1;
+  return i;
+}
+
+gluBuild2DMipmaps (GLenum target,
+                           GLint  	internalFormat,
+                           GLsizei  	width,
+                           GLsizei  	height,
+                           GLenum  	format,
+                           GLenum  	type,
+                           const GLvoid *data)
+{
+    /* Not really bothering with mipmapping; only making one level.
+       Note that this required a corresponding hack in glTexParameterf().
+     */
+
+    int w2 = to_pow2(width);
+    int h2 = to_pow2(height);
+
+    void *d2 = (void *) data;
+
+    /* OpenGLES no longer supports "4" as a synonym for "RGBA". */
+    switch (internalFormat)
+    {
+    case 1:
+        internalFormat = GL_LUMINANCE;
+        break;
+    case 2:
+        internalFormat = GL_LUMINANCE_ALPHA;
+        break;
+    case 3:
+        internalFormat = GL_RGB;
+        break;
+    case 4:
+        internalFormat = GL_RGBA;
+        break;
+    }
+
+    /*  if (w2 < h2) w2 = h2;
+      if (h2 < w2) h2 = w2;*/
+
+    if (w2 != width || h2 != height)
+    {
+        /* Scale up the image bits to fit the power-of-2 texture.
+           We have to do this because the mipmap API assumes that
+           the texture bits go to texture coordinates 1.0 x 1.0.
+           This could be more efficient, but it doesn't happen often.
+        */
+        int istride = (format == GL_RGBA ? 4 : 3);
+        int ostride = 4;
+        int ibpl = istride * width;
+        int obpl = ostride * w2;
+        int oy;
+        const unsigned char *in = (unsigned char *) data;
+        unsigned char *out = (void *) malloc (h2 * obpl);
+
+        d2 = out;
+
+        for (oy = 0; oy < h2; oy++)
+        {
+            int iy = oy * height / h2;
+            const unsigned char *iline = in  + (iy * ibpl);
+            unsigned char       *oline = out + (oy * obpl);
+            int ox;
+            for (ox = 0; ox < w2; ox++)
+            {
+                int ix = ox * width / w2;
+                const unsigned char *i = iline + (ix * istride);
+                unsigned char       *o = oline + (ox * ostride);
+                *o++ = *i++;  /* R */
+                *o++ = *i++;  /* G */
+                *o++ = *i++;  /* B */
+                *o++ = (istride == 4 ? *i : 0xFF); /* A */
+            }
+        }
+        width  = w2;
+        height = h2;
+        internalFormat = GL_RGBA;
+        format = GL_RGBA;
+    }
+
+    glTexImage2D (target, 0, internalFormat, w2, h2, 0,
+                          format, type, d2);
+    if (d2 != data) free (d2);
+
+    return 0;
+}
 GLuint gld_LoadDetailName(const char *name)
 {
   GLuint texid = 0;

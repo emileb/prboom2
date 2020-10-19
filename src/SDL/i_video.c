@@ -529,6 +529,9 @@ void I_FinishUpdate (void)
   if (V_GetMode() == VID_MODEGL) {
     // proff 04/05/2000: swap OpenGL buffers
     gld_Finish();
+
+    glEnable(GL_ALPHA_TEST);
+    glEnable(GL_BLEND);
     return;
   }
 #endif
@@ -1202,6 +1205,10 @@ void I_UpdateVideoMode(void)
     SDL_GL_SetAttribute( SDL_GL_BUFFER_SIZE, gl_colorbuffer_bits );
     SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, gl_depthbuffer_bits );
     SDL_GL_SetAttribute( SDL_GL_STENCIL_SIZE, 8 );
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
     //e6y: anti-aliasing
     gld_MultisamplingInit();
